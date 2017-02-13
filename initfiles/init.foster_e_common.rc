@@ -19,16 +19,6 @@ on boot
     # Lower console loglevel to reduce number of printk messages to console
     write /proc/sys/kernel/printk "4 7 1 7 3"
 
-on post-fs-data
-# Set Foster as console mode
-    setprop persist.sys.display.resolution 1920x1080
-    setprop persist.tegra.hdmi.resolution Max_60Hz
-    setprop persist.tegra.composite.policy composite-yuv
-    setprop sys.wal.off external.db,iu.upload.db
-    setprop sys.wal.normal tz4,PGDatabase,launcher.db,playlog.db,music.db
-    write /sys/power/wake_lock foster-staywake
-    start cyupdate
-
 on firmware_mounts_complete
     symlink /system/vendor/firmware/bcm4354/fw_bcmdhd.bin /data/misc/wifi/firmware/fw_bcmdhd.bin
     symlink /system/vendor/firmware/bcm4354/fw_bcmdhd.bin /data/misc/wifi/firmware/fw_bcmdhd_apsta.bin
@@ -46,16 +36,7 @@ on init
     symlink /mnt/media_rw/usbdrive3 /usbdrive3
 
 service fuse_usbdrive2 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbdrive2 /storage/usbdrive2
-    class late_start
-    disabled
+    class main
 
 service fuse_usbdrive3 /system/bin/sdcard -u 1023 -g 1023 -w 1023 -d /mnt/media_rw/usbdrive3 /storage/usbdrive3
-    class late_start
-    disabled
-
-service cyupdate /vendor/bin/cyupdate.sh
     class main
-    user system
-    group system
-    oneshot
-    disabled
