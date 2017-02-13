@@ -21,7 +21,7 @@ on fs
 on post-fs-data
     mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/RP3 /factory/wifi_config rw nosuid noexec nodev
     restorecon_recursive /factory/wifi_config
-    mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/RP3 /factory/wifi_config ro nosuid noexec nodev remount
+    mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/RP3 /factory/wifi_config rw nosuid noexec nodev remount
 
 on property:factory.wifi_country_code=*
     mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/RP3 /factory/wifi_config rw remount
@@ -33,11 +33,10 @@ on property:factory.wifi_country_code=*
     start factoryconfig
 
 on property:factory.sku_config=done
-    mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/RP3 /factory/wifi_config ro nosuid noexec nodev remount
+    mount ext4 /dev/block/platform/sdhci-tegra.3/by-name/RP3 /factory/wifi_config rw nosuid noexec nodev remount
 
 service factoryconfig /system/bin/factoryconfig.sh
     class main
     user system
     group system sdcard_rw
-    disabled
     oneshot
